@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ashwin R — Data & Business Analyst</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #0A0808;
+    --surface: #161011;
+    --surface-2: #1E1516;
+    --border: #3B1418;
+    --text: #F2E7E5;
+    --text-muted: #9C8283;
+    --teal: #D22B2B;
+    --amber: #B8860B;
+    --coral: #8B0000;
+    --font-display: 'Space Grotesk', sans-serif;
+    --font-body: 'IBM Plex Sans', sans-serif;
+    --font-mono: 'IBM Plex Mono', monospace;
+  }
+
+  *{ margin:0; padding:0; box-sizing:border-box; }
+
+  html{ scroll-behavior:smooth; }
+
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:var(--font-body);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  body::before{
+    content:"";
+    position:fixed; inset:0;
+    background-image:
+      linear-gradient(var(--border) 1px, transparent 1px),
+      linear-gradient(90deg, var(--border) 1px, transparent 1px);
+    background-size:64px 64px;
+    opacity:0.06;
+    pointer-events:none;
+    z-index:0;
+  }
+
+  a{ color:inherit; text-decoration:none; }
+
+  .wrap{ max-width:1080px; margin:0 auto; padding:0 32px; position:relative; z-index:1; }
+
+  /* ---------- NAV ---------- */
+  nav{
+    position:sticky; top:0; z-index:50;
+    background:rgba(11,30,35,0.85);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--border);
+  }
+  nav .wrap{ display:flex; align-items:center; justify-content:space-between; padding-top:18px; padding-bottom:18px; }
+  .logo{ font-family:var(--font-mono); font-size:15px; font-weight:600; color:var(--text); letter-spacing:0.3px; }
+  .logo span{ color:var(--teal); }
+  .navlinks{ display:flex; gap:28px; font-family:var(--font-mono); font-size:13px; color:var(--text-muted); }
+  .navlinks a{ transition:color .2s ease; }
+  .navlinks a:hover{ color:var(--teal); }
+  .navlinks a::before{ content:"-- "; color:var(--border); }
+  .nav-toggle{ display:none; }
+
+  /* ---------- HERO ---------- */
+  .hero{ padding:88px 0 72px; }
+  .hero-grid{ display:grid; grid-template-columns:1.15fr 0.85fr; gap:56px; align-items:start; }
+
+  .eyebrow{
+    font-family:var(--font-mono); font-size:13px; color:var(--teal);
+    display:flex; align-items:center; gap:10px; margin-bottom:20px;
+  }
+  .eyebrow .dot{ width:7px; height:7px; border-radius:50%; background:var(--teal); box-shadow:0 0 0 3px rgba(67,198,172,0.18); }
+
+  h1.headline{
+    font-family:var(--font-display); font-weight:700;
+    font-size:clamp(34px, 4.4vw, 52px);
+    line-height:1.12; letter-spacing:-0.5px;
+    margin-bottom:20px;
+  }
+  h1.headline .accent{ color:var(--teal); }
+
+  .sub{ font-size:16px; color:var(--text-muted); max-width:520px; margin-bottom:32px; }
+
+  .cta-row{ display:flex; gap:14px; flex-wrap:wrap; }
+  .btn{
+    font-family:var(--font-mono); font-size:13px; font-weight:500;
+    padding:13px 22px; border-radius:6px; display:inline-flex; align-items:center; gap:8px;
+    transition:all .18s ease; border:1px solid transparent;
+  }
+  .btn-primary{ background:var(--teal); color:#1A0808; }
+  .btn-primary:hover{ background:#E64545; transform:translateY(-1px); }
+  .btn-ghost{ border-color:var(--border); color:var(--text); }
+  .btn-ghost:hover{ border-color:var(--teal); color:var(--teal); }
+
+  /* photo badge */
+  .photo-card{
+    background:var(--surface); border:1px solid var(--border); border-radius:14px;
+    padding:18px; text-align:center;
+  }
+  .photo-card img{
+    width:100%; aspect-ratio:1/1; object-fit:cover; border-radius:10px;
+    filter:saturate(0.92) contrast(1.03);
+    border:1px solid var(--border);
+  }
+  .photo-meta{ font-family:var(--font-mono); font-size:12px; color:var(--text-muted); margin-top:14px; display:flex; justify-content:space-between; }
+  .photo-meta .status{ color:var(--teal); display:flex; align-items:center; gap:6px; }
+  .photo-meta .status::before{ content:""; width:6px; height:6px; border-radius:50%; background:var(--teal); }
+
+  /* ---------- SQL CONSOLE ---------- */
+  .console{
+    margin-top:44px;
+    background:var(--surface); border:1px solid var(--border); border-radius:10px;
+    overflow:hidden;
+  }
+  .console-bar{
+    display:flex; align-items:center; gap:8px;
+    padding:11px 16px; border-bottom:1px solid var(--border); background:var(--surface-2);
+  }
+  .console-bar .dotx{ width:9px; height:9px; border-radius:50%; }
+  .dotx.r{ background:#8B000055; border:1px solid var(--coral); }
+  .dotx.y{ background:#B8860B55; border:1px solid var(--amber); }
+  .dotx.g{ background:#D22B2B55; border:1px solid var(--teal); }
+  .console-bar .label{ font-family:var(--font-mono); font-size:12px; color:var(--text-muted); margin-left:8px; }
+  .console-body{ padding:18px 20px; font-family:var(--font-mono); font-size:13.5px; }
+  .query-line{ color:var(--text-muted); white-space:pre-wrap; }
+  .query-line .kw{ color:var(--teal); }
+  .query-line .str{ color:var(--amber); }
+  #typed-query::after{ content:"▌"; color:var(--teal); animation:blink 1s step-end infinite; }
+  @keyframes blink{ 50%{ opacity:0; } }
+
+  .results{ margin-top:16px; opacity:0; transform:translateY(6px); transition:all .5s ease; }
+  .results.show{ opacity:1; transform:translateY(0); }
+  .results-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--border); border:1px solid var(--border); border-radius:8px; overflow:hidden; margin-top:10px; }
+  .results-grid .cell{ background:var(--surface); padding:14px 12px; }
+  .results-grid .cell .val{ font-size:19px; font-weight:600; color:var(--text); }
+  .results-grid .cell .lab{ font-size:10.5px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.6px; margin-top:4px; }
+  .results-grid .cell.head{ background:var(--surface-2); color:var(--text-muted); font-size:11px; padding:8px 12px; }
+
+  /* ---------- SECTION SHARED ---------- */
+  section{ padding:64px 0; border-top:1px solid var(--border); }
+  .section-tag{
+    font-family:var(--font-mono); font-size:13px; color:var(--teal); margin-bottom:8px;
+  }
+  .section-tag::before{ content:"-- "; color:var(--border); }
+  h2.section-title{
+    font-family:var(--font-display); font-weight:600; font-size:26px; margin-bottom:36px;
+  }
+
+  /* ---------- SUMMARY ---------- */
+  .summary-block{
+    background:var(--surface); border-left:2px solid var(--teal); border-radius:0 10px 10px 0;
+    padding:24px 28px; font-size:16px; color:var(--text);
+  }
+  .summary-block .comment{ font-family:var(--font-mono); color:var(--text-muted); font-size:13px; display:block; margin-bottom:10px; }
+
+  /* ---------- SKILLS ---------- */
+  .skills-grid{ display:grid; grid-template-columns:1fr 1fr; gap:24px; }
+  .skill-card{ background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:22px; }
+  .skill-card h3{ font-family:var(--font-mono); font-size:12px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.6px; margin-bottom:16px; }
+  .tag-row{ display:flex; flex-wrap:wrap; gap:8px; }
+  .tag{
+    font-family:var(--font-mono); font-size:12.5px; color:var(--text);
+    background:var(--surface-2); border:1px solid var(--border); border-radius:5px; padding:6px 11px;
+  }
+
+  /* ---------- EXPERIENCE ---------- */
+  .exp-card{
+    background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:28px 30px;
+  }
+  .exp-head{ display:flex; justify-content:space-between; align-items:baseline; flex-wrap:wrap; gap:8px; margin-bottom:6px; }
+  .exp-role{ font-family:var(--font-display); font-size:19px; font-weight:600; }
+  .exp-date{ font-family:var(--font-mono); font-size:12.5px; color:var(--teal); }
+  .exp-org{ color:var(--text-muted); font-size:14px; margin-bottom:18px; }
+  .exp-list{ list-style:none; display:flex; flex-direction:column; gap:11px; }
+  .exp-list li{ padding-left:18px; position:relative; font-size:14.5px; color:var(--text); }
+  .exp-list li::before{ content:"▸"; position:absolute; left:0; color:var(--teal); }
+  .kpi-strip{ display:flex; gap:10px; margin-top:20px; flex-wrap:wrap; }
+  .kpi-chip{ font-family:var(--font-mono); font-size:11.5px; color:var(--amber); background:#B8860B14; border:1px solid #B8860B33; padding:6px 10px; border-radius:5px; }
+
+  /* ---------- PROJECTS ---------- */
+  .projects-grid{ display:grid; grid-template-columns:1fr 1fr; gap:22px; }
+  .proj-card{
+    background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:26px;
+    display:flex; flex-direction:column; transition:border-color .2s ease, transform .2s ease;
+  }
+  .proj-card:hover{ border-color:var(--teal); transform:translateY(-3px); }
+  .proj-top{ display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:10px; gap:10px; }
+  .proj-title{ font-family:var(--font-display); font-size:17px; font-weight:600; }
+  .proj-stack{ font-family:var(--font-mono); font-size:11px; color:var(--text-muted); margin-bottom:14px; }
+  .proj-desc{ font-size:14px; color:var(--text-muted); margin-bottom:16px; flex-grow:1; }
+  .proj-metric{ font-family:var(--font-mono); font-size:12px; color:var(--teal); margin-bottom:16px; }
+  .proj-links{ display:flex; gap:10px; }
+  .proj-link{
+    font-family:var(--font-mono); font-size:12px; border:1px solid var(--border); border-radius:6px;
+    padding:8px 13px; display:flex; align-items:center; gap:6px; transition:all .18s ease;
+  }
+  .proj-link:hover{ border-color:var(--teal); color:var(--teal); }
+  .proj-link svg{ width:13px; height:13px; }
+
+  /* ---------- EDU / CERTS ---------- */
+  .edu-grid{ display:grid; grid-template-columns:1fr 1fr; gap:24px; }
+  .edu-card{ background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:24px; }
+  .edu-card h3{ font-family:var(--font-mono); font-size:12px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.6px; margin-bottom:16px; }
+  .edu-item{ margin-bottom:14px; }
+  .edu-item:last-child{ margin-bottom:0; }
+  .edu-item .t{ font-size:14.5px; font-weight:500; }
+  .edu-item .d{ font-family:var(--font-mono); font-size:12px; color:var(--text-muted); margin-top:2px; }
+  .cert-list{ list-style:none; display:flex; flex-direction:column; gap:10px; }
+  .cert-list li{ padding-left:18px; position:relative; font-size:14px; color:var(--text); }
+  .cert-list li::before{ content:"✓"; position:absolute; left:0; color:var(--teal); font-size:12px; top:3px; }
+  .cert-list li a{ transition:color .18s ease; border-bottom:1px dashed transparent; }
+  .cert-list li a:hover{ color:var(--teal); border-bottom-color:var(--teal); }
+
+  /* ---------- CONTACT / FOOTER ---------- */
+  footer{ padding:64px 0 48px; border-top:1px solid var(--border); }
+  .contact-title{ font-family:var(--font-display); font-size:30px; font-weight:600; margin-bottom:14px; }
+  .contact-sub{ color:var(--text-muted); margin-bottom:32px; max-width:460px; }
+  .contact-grid{ display:flex; gap:14px; flex-wrap:wrap; margin-bottom:44px; }
+  .contact-item{
+    display:flex; align-items:center; gap:10px; font-family:var(--font-mono); font-size:13px;
+    border:1px solid var(--border); border-radius:8px; padding:12px 16px; transition:all .18s ease;
+  }
+  .contact-item:hover{ border-color:var(--teal); color:var(--teal); }
+  .contact-item svg{ width:15px; height:15px; color:var(--teal); flex-shrink:0; }
+  .contact-item:hover svg{ color:var(--teal); }
+  .foot-bottom{ font-family:var(--font-mono); font-size:12px; color:var(--text-muted); display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px; padding-top:24px; border-top:1px solid var(--border); }
+
+  /* ---------- SCROLL REVEAL ---------- */
+  .reveal{ opacity:0; transform:translateY(16px); transition:opacity .6s ease, transform .6s ease; }
+  .reveal.in{ opacity:1; transform:translateY(0); }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ transition:none !important; animation:none !important; }
+  }
+
+  /* ---------- RESPONSIVE ---------- */
+  @media (max-width: 860px){
+    .hero-grid{ grid-template-columns:1fr; }
+    .photo-card{ max-width:260px; margin:0 auto; }
+    .skills-grid, .projects-grid, .edu-grid{ grid-template-columns:1fr; }
+    .results-grid{ grid-template-columns:repeat(2,1fr); }
+    .navlinks{ display:none; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <div class="logo">ashwin<span>_r</span>.mis</div>
+    <div class="navlinks">
+      <a href="#experience">experience</a>
+      <a href="#projects">projects</a>
+      <a href="#skills">skills</a>
+      <a href="#contact">contact</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="eyebrow"><span class="dot"></span>OPEN TO CHENNAI · BENGALURU · REMOTE</div>
+      <h1 class="headline">I clean messy data and <span class="accent">turn it into reports people trust.</span></h1>
+      <p class="sub">Ashwin R — Data Analyst &amp; Business Analyst working across SQL, Python and Excel to clean, validate and visualize data that businesses actually act on.</p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="#projects">View Projects</a>
+        <a class="btn btn-ghost" href="#contact">Get in Touch</a>
+      </div>
+
+      <div class="console">
+        <div class="console-bar">
+          <span class="dotx r"></span><span class="dotx y"></span><span class="dotx g"></span>
+          <span class="label">query_console — ashwin_profile.sql</span>
+        </div>
+        <div class="console-body">
+          <div class="query-line"><span id="typed-query"></span></div>
+          <div class="results" id="results-block">
+            <div class="results-grid">
+              <div class="cell head">dashboards shipped</div>
+              <div class="cell head">certifications</div>
+              <div class="cell head">years experience</div>
+              <div class="cell"><div class="val">4</div></div>
+              <div class="cell"><div class="val">6</div></div>
+              <div class="cell"><div class="val">2+</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="photo-card">
+      <img src="ashwin.jpg" alt="Ashwin R">
+      <div class="photo-meta">
+        <span>Puducherry, IN</span>
+        <span class="status">available now</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section id="summary">
+  <div class="wrap reveal">
+    <div class="section-tag">summary</div>
+    <h2 class="section-title">Profile</h2>
+    <div class="summary-block">
+      <span class="comment">/* professional_summary */</span>
+      Aspiring Data Analyst with experience in data analysis, reporting, and regulatory compliance. Skilled in SQL, Python, and Excel for data cleaning, validation, and visualization — writing queries, building dashboards, and generating insights that support real decisions. Strong track record of transforming raw, messy data into something a business can actually use.
+    </div>
+  </div>
+</section>
+
+<section id="skills">
+  <div class="wrap reveal">
+    <div class="section-tag">skills</div>
+    <h2 class="section-title">What I work with</h2>
+    <div class="skills-grid">
+      <div class="skill-card">
+        <h3>Core Competencies</h3>
+        <div class="tag-row">
+          <span class="tag">Data Analysis</span>
+          <span class="tag">Data Cleaning</span>
+          <span class="tag">Data Validation</span>
+          <span class="tag">Data Visualization</span>
+          <span class="tag">Reporting</span>
+          <span class="tag">Dashboard Creation</span>
+          <span class="tag">KPI Reporting</span>
+          <span class="tag">Data Interpretation</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <h3>Technical Skills</h3>
+        <div class="tag-row">
+          <span class="tag">SQL (Joins, Window Functions, Subqueries, CTEs)</span>
+          <span class="tag">Python (Core Python, Pandas, NumPy, Matplotlib)</span>
+          <span class="tag">Excel (Pivot Tables, XLOOKUP, INDEX-MATCH, SUMIFS, IF, Charts)</span>
+          <span class="tag">Tableau (Dashboards, Calculated Fields, Table Calculations, Parameters)</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="experience">
+  <div class="wrap reveal">
+    <div class="section-tag">experience</div>
+    <h2 class="section-title">Where I've worked</h2>
+    <div class="exp-card">
+      <div class="exp-head">
+        <span class="exp-role">Regulatory Compliance Executive</span>
+        <span class="exp-date">Apr 2022 — May 2024</span>
+      </div>
+      <div class="exp-org">Allreach Commodities India Pvt Ltd</div>
+      <ul class="exp-list">
+        <li>Analyzed client, transaction, and regulatory data using Excel to ensure compliance with exchange and regulatory requirements.</li>
+        <li>Performed data validation and reconciliation using VLOOKUP/XLOOKUP, IF, COUNTIF, and Pivot Tables.</li>
+        <li>Prepared daily, weekly, and monthly compliance reports for management review.</li>
+        <li>Maintained large datasets and ensured data accuracy for regulatory filings and internal reporting.</li>
+        <li>Built Pivot Table reports and dashboards to monitor compliance metrics and operational performance.</li>
+        <li>Assisted in regulatory audits through data collection, validation, and reporting activities.</li>
+      </ul>
+      <div class="kpi-strip">
+        <span class="kpi-chip">Daily / weekly / monthly reporting</span>
+        <span class="kpi-chip">Regulatory audit support</span>
+        <span class="kpi-chip">2+ years</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="projects">
+  <div class="wrap reveal">
+    <div class="section-tag">projects</div>
+    <h2 class="section-title">Things I've built</h2>
+    <div class="projects-grid">
+
+      <div class="proj-card">
+        <div class="proj-top">
+          <span class="proj-title">Superstore Analysis Dashboard</span>
+        </div>
+        <div class="proj-stack">MySQL · Tableau · Excel</div>
+        <p class="proj-desc">Analyzed 9,994 retail sales records to evaluate performance by region, category, segment, and city. Built an interactive Tableau dashboard with KPI cards, profitability insights, and business filters, including a discount-vs-profit analysis.</p>
+        <div class="proj-metric">→ 9,994 records · discount-to-profit correlation surfaced</div>
+        <div class="proj-links">
+          <a class="proj-link" href="https://github.com/itsashwinr/retail-inventory-sales-dashboard" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.1 3.29 9.42 7.86 10.95.58.1.79-.25.79-.56 0-.28-.01-1.02-.02-2-3.2.7-3.88-1.54-3.88-1.54-.52-1.34-1.28-1.7-1.28-1.7-1.04-.72.08-.7.08-.7 1.15.08 1.76 1.19 1.76 1.19 1.03 1.75 2.7 1.25 3.36.96.1-.75.4-1.25.73-1.54-2.55-.29-5.24-1.28-5.24-5.7 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.8 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.84 1.19 3.1 0 4.43-2.7 5.4-5.27 5.69.42.36.78 1.08.78 2.18 0 1.57-.02 2.84-.02 3.23 0 .31.21.67.8.56A10.52 10.52 0 0 0 23.5 12c0-6.35-5.15-11.5-11.5-11.5Z"/></svg>
+            GitHub
+          </a>
+          <a class="proj-link" href="https://public.tableau.com/app/profile/ashwin.r4543/viz/RetailinventorySalesPerformanceDashboard/RetailInventorySalesPerformanceDashboard" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M13 3v6h8V3h-8zM3 21h8v-6H3v6zm0-8h8V3H3v10zm10 8h8v-8h-8v8z"/></svg>
+            Tableau
+          </a>
+        </div>
+      </div>
+
+      <div class="proj-card">
+        <div class="proj-top">
+          <span class="proj-title">Retail Inventory &amp; Sales Performance Dashboard</span>
+        </div>
+        <div class="proj-stack">MySQL · Tableau · Excel</div>
+        <p class="proj-desc">Analyzed retail inventory and sales data to surface revenue trends, inventory risk, forecasting accuracy, and promotion effectiveness. Wrote SQL queries using aggregation, grouping, and filtering to answer key retail performance questions.</p>
+        <div class="proj-metric">→ restock flags identified · promo impact quantified</div>
+        <div class="proj-links">
+          <a class="proj-link" href="https://github.com/itsashwinr/retail-inventory-sales-dashboard" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.1 3.29 9.42 7.86 10.95.58.1.79-.25.79-.56 0-.28-.01-1.02-.02-2-3.2.7-3.88-1.54-3.88-1.54-.52-1.34-1.28-1.7-1.28-1.7-1.04-.72.08-.7.08-.7 1.15.08 1.76 1.19 1.76 1.19 1.03 1.75 2.7 1.25 3.36.96.1-.75.4-1.25.73-1.54-2.55-.29-5.24-1.28-5.24-5.7 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.8 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.84 1.19 3.1 0 4.43-2.7 5.4-5.27 5.69.42.36.78 1.08.78 2.18 0 1.57-.02 2.84-.02 3.23 0 .31.21.67.8.56A10.52 10.52 0 0 0 23.5 12c0-6.35-5.15-11.5-11.5-11.5Z"/></svg>
+            GitHub
+          </a>
+          <a class="proj-link" href="https://public.tableau.com/app/profile/ashwin.r4543/viz/RetailinventorySalesPerformanceDashboard/RetailInventorySalesPerformanceDashboard" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M13 3v6h8V3h-8zM3 21h8v-6H3v6zm0-8h8V3H3v10zm10 8h8v-8h-8v8z"/></svg>
+            Tableau
+          </a>
+        </div>
+      </div>
+
+      <div class="proj-card">
+        <div class="proj-top">
+          <span class="proj-title">Employee Performance &amp; Attrition Analysis</span>
+        </div>
+        <div class="proj-stack">SQL · Tableau</div>
+        <p class="proj-desc">Ran workforce analytics on 1 lakh employee records to uncover trends in performance, productivity, satisfaction, and attrition. Compared performance scores, overtime, and salary spend across departments to flag burnout and turnover risk.</p>
+        <div class="proj-metric">→ 1,00,000 records · burnout-risk employees flagged</div>
+        <div class="proj-links">
+          <a class="proj-link" href="https://github.com/itsashwinr/Employee_performance_analytics" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.1 3.29 9.42 7.86 10.95.58.1.79-.25.79-.56 0-.28-.01-1.02-.02-2-3.2.7-3.88-1.54-3.88-1.54-.52-1.34-1.28-1.7-1.28-1.7-1.04-.72.08-.7.08-.7 1.15.08 1.76 1.19 1.76 1.19 1.03 1.75 2.7 1.25 3.36.96.1-.75.4-1.25.73-1.54-2.55-.29-5.24-1.28-5.24-5.7 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.8 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.84 1.19 3.1 0 4.43-2.7 5.4-5.27 5.69.42.36.78 1.08.78 2.18 0 1.57-.02 2.84-.02 3.23 0 .31.21.67.8.56A10.52 10.52 0 0 0 23.5 12c0-6.35-5.15-11.5-11.5-11.5Z"/></svg>
+            GitHub
+          </a>
+          <a class="proj-link" href="https://public.tableau.com/app/profile/ashwin.r4543/viz/EmployeePerformanceandAttritionDashboard/EmployeePerformanceAttritionDashboard?publish=yes" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M13 3v6h8V3h-8zM3 21h8v-6H3v6zm0-8h8V3H3v10zm10 8h8v-8h-8v8z"/></svg>
+            Tableau
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section id="education">
+  <div class="wrap reveal">
+    <div class="section-tag">education</div>
+    <h2 class="section-title">Education &amp; Certifications</h2>
+    <div class="edu-grid">
+      <div class="edu-card">
+        <h3>Education &amp; Training</h3>
+        <div class="edu-item">
+          <div class="t">B.Sc Computer Science</div>
+          <div class="d">RAAK Arts and Science College · 2018 – 2021</div>
+        </div>
+        <div class="edu-item">
+          <div class="t">The Data Science and Machine Learning Program</div>
+          <div class="d">Scaler Academy · 2024 – Present</div>
+        </div>
+      </div>
+      <div class="edu-card">
+        <h3>Certifications</h3>
+        <ul class="cert-list">
+          <li><a href="https://drive.google.com/file/d/15Hi3KDHrucVlxI1hKHtRS8ecDPWlTAPq/view" target="_blank" rel="noopener">SQL Certification — Scaler Academy</a></li>
+          <li><a href="https://drive.google.com/file/d/186fWR7zKTltu64UZoLBMkx5FwvDRyG27/view" target="_blank" rel="noopener">Exploratory Data Analysis (EDA) — Scaler Academy</a></li>
+          <li><a href="https://drive.google.com/file/d/1uo_25xfAS-dyFqBg6nSPaCC-kz1GhhAc/view" target="_blank" rel="noopener">Python Libraries (pandas, NumPy, Visualization) — Scaler Academy</a></li>
+          <li><a href="https://drive.google.com/file/d/1aTrgHBFjXvq_lHX7pRBG7OuoELbzn2qR/view" target="_blank" rel="noopener">Supervised Learning — Scaler Academy</a></li>
+          <li><a href="https://drive.google.com/file/d/1hl3ZlZbA4C71MxRG4jefMApg_VmriRRg/view" target="_blank" rel="noopener">Unsupervised Learning — Scaler Academy</a></li>
+          <li><a href="https://drive.google.com/file/d/1U1UxTEnzK38jggTwZbvdhg-S4rEy-rkm/view" target="_blank" rel="noopener">MLOps — Scaler Academy</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer id="contact">
+  <div class="wrap reveal">
+    <div class="section-tag">contact</div>
+    <div class="contact-title">Let's talk data.</div>
+    <p class="contact-sub">Open to Data Analyst, Business Analyst, and MIS Analyst roles in Chennai, Bengaluru, or remote. Reach out any time.</p>
+    <div class="contact-grid">
+      <a class="contact-item" href="mailto:ashwin2000achu@gmail.com">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v16H4z"/><path d="M4 6l8 7 8-7"/></svg>
+        ashwin2000achu@gmail.com
+      </a>
+      <a class="contact-item" href="tel:+919655976480">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.7a2 2 0 0 1-.4 2.1L8.1 9.7a16 16 0 0 0 6 6l1.2-1.2a2 2 0 0 1 2.1-.4c.9.3 1.8.5 2.7.6a2 2 0 0 1 1.9 2.2Z"/></svg>
+        +91 96559 76480
+      </a>
+      <a class="contact-item" href="https://linkedin.com/in/itsashwinr" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9h4v12H3V9zm6.5 0H14v1.75h.06c.6-1.1 2.05-2.25 4.22-2.25 4.5 0 5.33 2.9 5.33 6.7V21h-4v-5.3c0-1.27-.02-2.9-1.78-2.9-1.78 0-2.05 1.38-2.05 2.8V21h-4V9z"/></svg>
+        linkedin.com/in/itsashwinr
+      </a>
+      <a class="contact-item" href="https://github.com/itsashwinr" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.1 3.29 9.42 7.86 10.95.58.1.79-.25.79-.56 0-.28-.01-1.02-.02-2-3.2.7-3.88-1.54-3.88-1.54-.52-1.34-1.28-1.7-1.28-1.7-1.04-.72.08-.7.08-.7 1.15.08 1.76 1.19 1.76 1.19 1.03 1.75 2.7 1.25 3.36.96.1-.75.4-1.25.73-1.54-2.55-.29-5.24-1.28-5.24-5.7 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.8 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.84 1.19 3.1 0 4.43-2.7 5.4-5.27 5.69.42.36.78 1.08.78 2.18 0 1.57-.02 2.84-.02 3.23 0 .31.21.67.8.56A10.52 10.52 0 0 0 23.5 12c0-6.35-5.15-11.5-11.5-11.5Z"/></svg>
+        github.com/itsashwinr
+      </a>
+    </div>
+    <div class="foot-bottom">
+      <span>Ashwin R · Data &amp; Business Analyst</span>
+      <span>Puducherry, India</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Typewriter for hero SQL query
+  const query = `SELECT skills, impact FROM ashwin.profile\nWHERE role IN ('data_analyst','business_analyst','mis_analyst');`;
+  const el = document.getElementById('typed-query');
+  const resultsBlock = document.getElementById('results-block');
+  let i = 0;
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function highlight(text){
+    return text
+      .replace(/\b(SELECT|FROM|WHERE|IN)\b/g, '<span class="kw">$1</span>')
+      .replace(/('[^']*')/g, '<span class="str">$1</span>');
+  }
+
+  function type(){
+    if(i <= query.length){
+      el.innerHTML = highlight(query.slice(0, i));
+      i++;
+      setTimeout(type, 18);
+    } else {
+      setTimeout(()=> resultsBlock.classList.add('show'), 300);
+    }
+  }
+
+  if(prefersReduced){
+    el.innerHTML = highlight(query);
+    resultsBlock.classList.add('show');
+  } else {
+    type();
+  }
+
+  // Scroll reveal
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){ entry.target.classList.add('in'); io.unobserve(entry.target); }
+    });
+  }, { threshold: 0.12 });
+  revealEls.forEach(el=> io.observe(el));
+</script>
+
+</body>
+</html>
